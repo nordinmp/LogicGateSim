@@ -1,4 +1,4 @@
-class OrGate extends LogicGate 
+class NandGate extends LogicGate 
 {
     constructor(x, y, inputNum1, inputNum2, outputNum1, gateOption) 
     {
@@ -14,9 +14,9 @@ class OrGate extends LogicGate
         this.gateOption = gateOption;
     }
     
-    orGate() 
+    nandGate() 
     {
-        if (this.input1Status === true || this.input2Status === true) 
+        if (this.input1Status === false || this.input2Status === false) 
         {
             this.logicText = "true";
         } 

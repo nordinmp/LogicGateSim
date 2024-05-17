@@ -1,7 +1,7 @@
 let inputs = [];
 let outputs = [];
 let logicGates = [];
-let gateOption;
+let gateChoice;
 
 function setup() 
 {
@@ -41,6 +41,10 @@ function setup()
 
   // Set the selected option to "And Gate".
   gateChoice.selected('And Gate');
+
+
+  // Knapper
+  
 }
 
 function draw() 
@@ -60,8 +64,6 @@ function draw()
 
   for (let i = 0; i < logicGates.length; i = i + 1)
   { 
-
-
     if (logicGates[i].gateOption == "And Gate")
     {
       logicGates[i].andGate();
@@ -102,7 +104,7 @@ function draw()
     }
     
     logicGates[i].drawLogicGate();
-    logicGates[i].draggable();
+
   }
 
   for (let i = 0; i < outputs.length; i = i + 1)
@@ -202,18 +204,14 @@ class Output
   }
 }
 
-
-
-
 function doubleClicked() 
 {
-
-  // TODO parseint()
+  // Prompt for input numbers
   promptInput = prompt("What inputs do you want to use? eg. 1 2");
   promptInputNumbers = split(promptInput, " ");
   promptOutput = prompt("What output do you want to use? eg. 2");
   promptOutputNumbers = split(promptOutput, " ");
- 
+
   // Check if any existing gate is already using the specified output
   let outputInUse = false;
   for (let i = 0; i < logicGates.length; i++) {
@@ -223,10 +221,47 @@ function doubleClicked()
        break; // Exit the loop as soon as we find the output is in use
      }
   }
- 
+
   // Only create a new LogicGate if the output is not in use
   if (!outputInUse) {
-     let newGate = new LogicGate(mouseX, mouseY, promptInputNumbers[0], promptInputNumbers[1], promptOutputNumbers[0], gateChoice.value());
-     logicGates.push(newGate);
+    let gateType = gateChoice.value(); // Correctly get the selected value
+
+    // Directly create and push a new gate based on the selected option
+    let newGate;
+    switch(gateType) {
+      case 'And Gate':
+        newGate = new AndGate(mouseX, mouseY, promptInputNumbers[0], promptInputNumbers[1], promptOutputNumbers[0], gateChoice.value());
+        break;
+      case 'Or Gate':
+        newGate = new OrGate(mouseX, mouseY, promptInputNumbers[0], promptInputNumbers[1], promptOutputNumbers[0], gateChoice.value());
+        break;
+      case 'Not Gate':
+        newGate = new NotGate(mouseX, mouseY, promptInputNumbers[0], promptOutputNumbers[0], gateChoice.value());
+        break;
+      case 'Buffer Gate':
+        newGate = new BufferGate(mouseX, mouseY, promptInputNumbers[0] , promptOutputNumbers[0], gateChoice.value());
+        break;
+      case 'Xor Gate':
+        newGate = new XorGate(mouseX, mouseY, promptInputNumbers[0], promptInputNumbers[1], promptOutputNumbers[0], gateChoice.value());
+        break;
+      case 'Xnor Gate':
+        newGate = new XnorGate(mouseX, mouseY, promptInputNumbers[0], promptInputNumbers[1], promptOutputNumbers[0], gateChoice.value());
+        break;
+      case 'Nor Gate':
+        newGate = new NorGate(mouseX, mouseY, promptInputNumbers[0], promptInputNumbers[1], promptOutputNumbers[0], gateChoice.value());
+        break;
+      case 'Nand Gate':
+        newGate = new NandGate(mouseX, mouseY, promptInputNumbers[0], promptInputNumbers[1], promptOutputNumbers[0], gateChoice.value());
+        break;
+      default:
+        console.log("Invalid gate type. Please try again.");
+
+        console.log(gateChoice.value , gateType);
+        return; // Exit the function if an invalid gate type is selected
+    }
+
+    if (newGate) {
+      logicGates.push(newGate);
+    }
   }
 }
