@@ -24,7 +24,9 @@ function setup()
 
   // Logic gate options
   gateChoice = createSelect();
-  gateChoice.position(25, height - 20);
+  gateChoice.position(25, height - 50);
+  gateChoice.size(100,35)
+
 
   gateChoice.option('And Gate');
   gateChoice.option('Or Gate');
@@ -38,13 +40,14 @@ function setup()
 
   gateChoice.option('Nand Gate');
 
-
   // Set the selected option to "And Gate".
   gateChoice.selected('And Gate');
 
-
-  // Knapper
-  
+  // Buttons
+  undoBtn = createButton('Undo');
+  undoBtn.position(width - 90, height - 50);
+  undoBtn.size(75,35)
+  undoBtn.mousePressed(undoGate);
 }
 
 function draw() 
@@ -113,97 +116,6 @@ function draw()
   }
 }
 
-
-class Input
-{
-  constructor(x, y, inputNum)
-  {
-    this.x = x;
-    this.y = y;
-
-    this.num = inputNum;
-    
-    this.checkbox = createCheckbox();
-    this.checkbox.position(this.x, this.y);
-  }
-  
-  showInput()
-  {
-    fill(0); 
-    textSize(16);  
-    textAlign(CENTER,CENTER);
-    
-    text('Input ' + this.num, this.x+10, this.y+35);
-  }
-
-  inputStatus()
-  {
-    if (!this.checkbox.checked())
-    {
-      return false;
-    }
-    return true;  
-  }
-}
-
-class Output
-{
-  constructor(x, y, listNum)
-  {
-    this.x = x;
-    this.y = y;
-    this.logicText = "false";
-
-    this.listNum = listNum;
-
-    this.colorR = 0
-    this.colorB = 0
-    this.colorG = 0
-  }
-  
-  drawOutput() 
-  {
-    push();
-    fill(this.colorR, this.colorG, this.colorB)
-
-    rect(this.x, this.y, 20, 20);
-    pop();
-
-    if (logicGates.length > 0)
-    {
-      // Check all logic gates to see if they are connected with output
-      for (let i = 0; i < logicGates.length; i = i + 1)
-      {
-        this.outputNum = logicGates[i].outputNum1 - 1
-        
-        // If they have the same number, they are connected
-        if (this.outputNum == this.listNum) 
-        {
-          // And they text of Output should be changed accordingly
-          this.logicText = logicGates[i].logicText;
-
-
-          if (this.logicText === "true")
-          {
-            this.colorR = 255;
-            this.colorG = 255;
-            this.colorB = 0;
-          } 
-          else
-          {
-            this.colorR = 0;
-            this.colorB = 0;
-            this.colorG = 0;
-          }
-        } 
-      }
-    }
-
-    text("Output", this.x + 10, this.y + 40);
-    text(this.logicText, this.x + 10, this.y + 66);
-  }
-}
-
 function doubleClicked() 
 {
   // Prompt for input numbers
@@ -263,5 +175,12 @@ function doubleClicked()
     if (newGate) {
       logicGates.push(newGate);
     }
+  }
+}
+
+function undoGate() {
+  if (logicGates.length > 0)
+  {
+    logicGates.splice(logicGates.length - 1, 1);
   }
 }
