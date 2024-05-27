@@ -9,14 +9,14 @@ function setup()
 
   for (let i = 0; i < 6; i = i + 1)
   {
-    let newInput = new Input(50, 200 + (100 * i), i + 1);
+    let newInput = new Input(65, 200 + (100 * i), i + 1);
 
     inputs.push(newInput);
   }
 
   for (let i = 0; i < 3; i = i + 1)
   {
-    let newOutput = new Output(width - 50, 200 + (200 * i), i );
+    let newOutput = new Output(width - 60, 200 + (200 * i), i );
 
     outputs.push(newOutput);
   }
@@ -67,6 +67,9 @@ function draw()
 
   for (let i = 0; i < logicGates.length; i = i + 1)
   { 
+
+    logicGates[i].drawLogicGate();
+
     if (logicGates[i].gateOption == "And Gate")
     {
       logicGates[i].andGate();
@@ -106,7 +109,6 @@ function draw()
       logicGates[i].bufferGate();
     }
     
-    logicGates[i].drawLogicGate();
 
   }
 
@@ -118,11 +120,21 @@ function draw()
 
 function doubleClicked() 
 {
+
   // Prompt for input numbers
   promptInput = prompt("What inputs do you want to use? eg. 1 2");
+
+  // Check if promptInput is not empty
+  if (!promptInput) {
+    console.log("No input was provided.");
+    return; // Return early if no input was provided
+  }  
   promptInputNumbers = split(promptInput, " ");
   promptOutput = prompt("What output do you want to use? eg. 2");
+
   promptOutputNumbers = split(promptOutput, " ");
+
+
 
   // Check if any existing gate is already using the specified output
   let outputInUse = false;
@@ -151,7 +163,7 @@ function doubleClicked()
         newGate = new NotGate(mouseX, mouseY, promptInputNumbers[0], promptOutputNumbers[0], gateChoice.value());
         break;
       case 'Buffer Gate':
-        newGate = new BufferGate(mouseX, mouseY, promptInputNumbers[0] , promptOutputNumbers[0], gateChoice.value());
+        newGate = new BufferGate(mouseX, mouseY, promptInputNumbers[0], promptOutputNumbers[0], gateChoice.value());
         break;
       case 'Xor Gate':
         newGate = new XorGate(mouseX, mouseY, promptInputNumbers[0], promptInputNumbers[1], promptOutputNumbers[0], gateChoice.value());
@@ -167,8 +179,7 @@ function doubleClicked()
         break;
       default:
         console.log("Invalid gate type. Please try again.");
-
-        console.log(gateChoice.value , gateType);
+        console.log(gateChoice.value, gateType);
         return; // Exit the function if an invalid gate type is selected
     }
 
