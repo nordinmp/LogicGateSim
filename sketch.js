@@ -54,6 +54,21 @@ function draw()
 {
   background(220);
 
+  push();
+  fill(0,0,0,150);
+  textSize(40);
+  textAlign(CENTER);
+  text('Logic Gate Simulator', width / 2, height / 3); // Position the title closer to the top
+  
+  textSize(16);
+  text('Double click anywhere to make a new gate.', width / 2, height / 3 + 60); // Adjusted position
+  text('Inputs are required but outputs are optional.', width / 2, height / 3 + 90); // Adjusted position
+  text('Normal inputs are from 1 - 6, but if you use other logic gates as inputs they are from A - Z', width / 2, height / 3 + 120); // Adjusted position
+  text('Choose different kinds of logic gates from the dropdown in the left corner.', width / 2, height / 3 + 150); // Adjusted position
+  text('You can undo your logic gates in the right corner.', width / 2, height / 3 + 180); // Adjusted position
+  text('Most logic gates have 2 inputs, except for Buffer- and Not Gates they only have 1.', width / 2, height / 3 + 210); // Adjusted position
+  pop();
+
   line(150, 0, 150, height)
 
   line(width - 100, 0, width - 100, height)
