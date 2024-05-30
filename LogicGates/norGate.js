@@ -15,7 +15,7 @@ class NorGate extends LogicGate
 
     norGate() 
     {
-        if (this.input1Status === false || this.input2Status === false)
+        if (this.input1Status === false && this.input2Status === false)
         {
             this.logicText = "true";
         } 

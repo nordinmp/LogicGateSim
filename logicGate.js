@@ -19,6 +19,8 @@ class LogicGate
         // object dragging
         this.dragging = false;
         this.mouseOver = false;
+        this.offsetX = 0;
+        this.offsetY = 0;
 
         this.gateImg =[
             loadImage('assets/and.png'),
@@ -48,6 +50,105 @@ class LogicGate
         text("Input " + inputLetterIndex, this.x + this.width/2, this.y + this.height + 50);
 
 
+
+        this.output1;
+
+        // Before assigning this.output1, check if outputNum1 is defined and not empty
+        if (typeof this.outputNum1!== 'undefined' && this.outputNum1!== '') {
+            this.output1 = this.outputs[this.outputNum1 - 1];
+        }
+        //console.log(this.output1)
+
+        if (this.logicText == "true")
+        {
+            this.dashOffset = (this.dashOffset + 1) % 20;
+        }
+       
+        this.drawGateImage();
+        //this.draggable();
+
+    }
+      
+    drawGateImage() {
+        switch (this.gateOption) {
+            case "And Gate":
+                image(this.gateImg[0], this.x, this.y);
+                this.gateImg[0].resize(62.03, 50);
+                break;
+            case "Buffer Gate":
+                image(this.gateImg[1], this.x, this.y);
+                this.gateImg[1].resize(43.3 , 50);
+                break;
+            case "Nand Gate":
+                image(this.gateImg[2], this.x, this.y);
+                this.gateImg[2].resize(74.6, 50);
+                break;
+            case "Nor Gate":
+                image(this.gateImg[3], this.x, this.y);
+                this.gateImg[3].resize(74.32, 50);
+                break;
+            case "Not Gate":
+                image(this.gateImg[4], this.x, this.y);
+                this.gateImg[4].resize(56.5, 50);
+                break;
+            case "Or Gate":
+                image(this.gateImg[5], this.x, this.y);
+                this.gateImg[5].resize(63.69, 50);
+                break;
+            case "Xnor Gate":
+                image(this.gateImg[6], this.x, this.y);
+                this.gateImg[6].resize(81.54, 50);
+                break;
+            case "Xor Gate":
+                image(this.gateImg[7], this.x, this.y);
+                this.gateImg[7].resize(69.86, 50);
+                break;
+            default:
+                console.warn("Unknown gate option:", this.gateOption);
+                break;
+        }
+    }
+
+
+    drawConditionalLines() 
+    {
+        if (this.output1 == undefined && this.inputId2 === 0) 
+        {
+            this.drawLines(this.input1.x, this.input1.y, true);
+        } 
+        else if (this.inputId2 === 0) 
+        {
+            this.drawLines(this.input1.x, this.input1.y, true);
+            this.drawLines(this.output1.x, this.output1.y, false);
+        } 
+        else if (this.output1 == undefined) 
+        {
+            this.drawLines(this.input1.x, this.input1.y, true);
+            this.drawLines(this.input2.x, this.input2.y, true);
+        } 
+        else 
+        {
+            this.drawLines(this.input1.x, this.input1.y, true);
+            this.drawLines(this.input2.x, this.input2.y, true);
+            this.drawLines(this.output1.x, this.output1.y, false);
+        }
+    }
+
+    drawLines(otherX, otherY, InOrOut) 
+    {
+        push();
+        strokeWeight(4);
+        stroke(0);
+        drawingContext.setLineDash([5, 15]);
+
+        // if InOrOut is true then draw lines pos if not draw negative
+        drawingContext.lineDashOffset = InOrOut? this.dashOffset : -this.dashOffset;
+        line(this.x + this.width / 2 -25, this.y + this.height / 2, otherX + 7, otherY + 7);
+        drawingContext.setLineDash([]); // Reset line dash to solid
+        pop();
+    }
+    
+    setupInputs() {
         if (this.inputId1) {
             // Determine if inputId1 is a number or a letter
             if (!isNaN(parseInt(this.inputId1))) {
@@ -95,143 +196,42 @@ class LogicGate
                 console.warn('Expected inputId2 to be a number or a letter.');
             }
         }
-
-
-
-        this.output1;
-
-        // Before assigning this.output1, check if outputNum1 is defined and not empty
-        if (typeof this.outputNum1!== 'undefined' && this.outputNum1!== '') {
-            this.output1 = this.outputs[this.outputNum1 - 1];
-        }
-        //console.log(this.output1)
-
-        if (this.logicText == "true")
-        {
-            this.dashOffset = (this.dashOffset + 1) % 20;
-        }
-
-        if (this.output1 == undefined && this.inputId2 === 0)
-        {
-            this.drawLines(this.input1.x, this.input1.y, true);
-        }
-        else if (this.inputId2 === 0) 
-        {
-            this.drawLines(this.input1.x, this.input1.y, true);
-            this.drawLines(this.output1.x, this.output1.y, false);
-        }
-        else if (this.output1 == undefined)
-        {
-            this.drawLines(this.input1.x, this.input1.y, true);
-            this.drawLines(this.input2.x, this.input2.y, true);
-        }
-        else 
-        {
-            this.drawLines(this.input1.x, this.input1.y, true);
-            this.drawLines(this.input2.x, this.input2.y, true);
-            this.drawLines(this.output1.x, this.output1.y, false);
-        }
-
-
-       
-        this.drawGateImage();
-        this.draggable();
-
     }
-      
-    drawGateImage() {
-        switch (this.gateOption) {
-            case "And Gate":
-                image(this.gateImg[0], this.x, this.y);
-                this.gateImg[0].resize(62.03, 50);
-                break;
-            case "Buffer Gate":
-                image(this.gateImg[1], this.x, this.y);
-                this.gateImg[1].resize(43.3 , 50);
-                break;
-            case "Nand Gate":
-                image(this.gateImg[2], this.x, this.y);
-                this.gateImg[2].resize(74.6, 50);
-                break;
-            case "Nor Gate":
-                image(this.gateImg[3], this.x, this.y);
-                this.gateImg[3].resize(74.32, 50);
-                break;
-            case "Not Gate":
-                image(this.gateImg[4], this.x, this.y);
-                this.gateImg[4].resize(56.5, 50);
-                break;
-            case "Or Gate":
-                image(this.gateImg[5], this.x, this.y);
-                this.gateImg[5].resize(63.69, 50);
-                break;
-            case "Xnor Gate":
-                image(this.gateImg[6], this.x, this.y);
-                this.gateImg[6].resize(81.54, 50);
-                break;
-            case "Xor Gate":
-                image(this.gateImg[7], this.x, this.y);
-                this.gateImg[7].resize(69.86, 50);
-                break;
-            default:
-                console.warn("Unknown gate option:", this.gateOption);
-                break;
+    
+    // Method to check if the mouse is over the logic gate
+    over() {
+        if (mouseX > this.x && mouseX < this.x + this.width && mouseY > this.y && mouseY < this.y + this.height) {
+            this.rollover = true;
+        } else {
+            this.rollover = false;
         }
     }
 
-    drawLines(otherX, otherY, InOrOut) {
-        push();
-        strokeWeight(4);
-        stroke(0);
-        drawingContext.setLineDash([5, 15]);
-
-        // if InOrOut is true then draw lines pos if not draw negative
-        drawingContext.lineDashOffset = InOrOut? this.dashOffset : -this.dashOffset;
-        line(this.x + this.width / 2 -25, this.y + this.height / 2, otherX + 7, otherY + 7);
-        drawingContext.setLineDash([]); // Reset line dash to solid
-        pop();
-    }
-  
-    draggable() {
-        cursor(ARROW);
-        // Check if the mouse is within the gate bounds
-        if (mouseX >= this.x && mouseX <= this.x + 50 && mouseY >= this.y && mouseY <= this.y + 50) {
-            cursor("grab");
-            // If the mouse is pressed, start moving the gate
-            if (mouseIsPressed) {
-                let newX = mouseX - 50 / 2; // New X position
-                let newY = mouseY - 50 / 2; // New Y position
-    
-                // Check for collision with other gates
-                for (let otherGate of logicGates) {
-                    if (otherGate!== this) { // Exclude the current gate from the check
-                        // Calculate distance between centers of the two gates
-                        let dx = newX - otherGate.x;
-                        let dy = newY - otherGate.y;
-    
-                        // Check if the distance is less than half the sum of their widths and heights
-                        // This is a simple way to detect overlap
-                        if (Math.abs(dx) < 50 && Math.abs(dy) < 50) {
-                            // Adjust the new position to avoid overlap
-                            if (newX < otherGate.x) {
-                                newX -= 10; // Move left
-                            } else if (newX > otherGate.x) {
-                                newX += 10; // Move right
-                            }
-                            if (newY < otherGate.y) {
-                                newY -= 10; // Move up
-                            } else if (newY > otherGate.y) {
-                                newY += 10; // Move down
-                            }
-                        }
-                    }
-                }
-    
-                // Update the gate's position after adjustment
-                this.x = newX;
-                this.y = newY;
-            }
+    // Update the position of the logic gate if it's being dragged
+    update() {
+        if (this.dragging) {
+            this.x += mouseX - pmouseX; // Move the logic gate based on mouse movement
+            this.y += mouseY - pmouseY;
         }
+    }
+
+    // Show the logic gate
+    show() {
+        // Your existing show method...
+    }
+
+    // Handle mouse press event
+    pressed() {
+        if (mouseX > this.x && mouseX < this.x + this.width && mouseY > this.y && mouseY < this.y + this.height) {
+            this.dragging = true;
+            this.offsetX = mouseX - this.x;
+            this.offsetY = mouseY - this.y;
+        }
+    }
+
+    // Handle mouse release event
+    released() {
+        this.dragging = false;
     }
 
     letterToNumber(letter) 
@@ -240,7 +240,8 @@ class LogicGate
         return Math.max(Math.min(offset, 26), 1); // Ensures the result is between 1 and 26
     }
 
-    numberToLetter(number) {
+    numberToLetter(number) 
+    {
         const letter = String.fromCharCode('A'.charCodeAt(0) + number - 1);
         return letter.toUpperCase(); // Ensures the result is always uppercase
     }

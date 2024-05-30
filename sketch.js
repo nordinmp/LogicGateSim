@@ -80,10 +80,14 @@ function draw()
     inputs[i].inputStatus(); // This updates the input's state
   }
 
+
+  let conditionalLinesDrawnFlags = [];
+
   for (let i = 0; i < logicGates.length; i = i + 1)
   { 
 
-    logicGates[i].drawLogicGate();
+
+    logicGates[i].update();
 
     if (logicGates[i].gateOption == "And Gate")
     {
@@ -124,7 +128,20 @@ function draw()
       logicGates[i].bufferGate();
     }
     
+    logicGates[i].setupInputs();
 
+    conditionalLinesDrawnFlags[i] = true;
+
+    logicGates[i].drawConditionalLines();
+
+  }
+
+  for (let i = 0; i < logicGates.length; i = i + 1)
+  {
+      if (conditionalLinesDrawnFlags[i])
+      {
+        logicGates[i].drawLogicGate();
+      }
   }
 
   for (let i = 0; i < outputs.length; i = i + 1)
@@ -210,5 +227,20 @@ function undoGate()
   if (logicGates.length > 0)
   {
     logicGates.splice(logicGates.length - 1, 1);
+  }
+}
+
+function mousePressed() {
+  for (let i = 0; i < logicGates.length; i = i + 1)
+  { 
+    logicGates[i].pressed();
+  }
+}
+
+function mouseReleased() {
+  // Quit dragging
+for (let i = 0; i < logicGates.length; i = i + 1)
+  { 
+    logicGates[i].released();
   }
 }
