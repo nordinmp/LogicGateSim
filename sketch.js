@@ -131,6 +131,7 @@ function draw()
   { 
     outputs[i].drawOutput();
   }
+
 }
 
 function doubleClicked() 
@@ -204,7 +205,8 @@ function doubleClicked()
   }
 }
 
-function undoGate() {
+function undoGate() 
+{
   if (logicGates.length > 0)
   {
     logicGates.splice(logicGates.length - 1, 1);

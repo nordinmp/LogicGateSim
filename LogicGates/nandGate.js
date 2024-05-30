@@ -16,13 +16,13 @@ class NandGate extends LogicGate
     
     nandGate() 
     {
-        if (this.input1Status === false || this.input2Status === false) 
+        if (!(this.input1Status && this.input2Status)) 
         {
-            this.logicText = "true";
+            this.logicText = "true"; // Outputs true if either or both inputs are false.
         } 
         else 
         {
-            this.logicText = "false";
-        }
+            this.logicText = "false"; // Outputs false if both inputs are true.
+        }   
     }
   }
