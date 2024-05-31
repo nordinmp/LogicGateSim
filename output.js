@@ -4,6 +4,10 @@ class Output
   {
     this.x = x;
     this.y = y;
+
+    this.width = 14
+    this.height = 14
+
     this.logicText = "false";
 
     this.listNum = listNum;
@@ -11,6 +15,8 @@ class Output
     this.colorR = 0
     this.colorB = 0
     this.colorG = 0
+
+
   }
   
   drawOutput() 

@@ -65,11 +65,10 @@ class LogicGate
         }
        
         this.drawGateImage();
-        //this.draggable();
-
     }
       
-    drawGateImage() {
+    drawGateImage() 
+    {
         switch (this.gateOption) {
             case "And Gate":
                 image(this.gateImg[0], this.x, this.y);
@@ -114,27 +113,27 @@ class LogicGate
     {
         if (this.output1 == undefined && this.inputId2 === 0) 
         {
-            this.drawLines(this.input1.x, this.input1.y, true);
+            this.drawLines(this.input1, true);
         } 
         else if (this.inputId2 === 0) 
         {
-            this.drawLines(this.input1.x, this.input1.y, true);
-            this.drawLines(this.output1.x, this.output1.y, false);
+            this.drawLines(this.input1, true);
+            this.drawLines(this.output1, false);
         } 
         else if (this.output1 == undefined) 
         {
-            this.drawLines(this.input1.x, this.input1.y, true);
-            this.drawLines(this.input2.x, this.input2.y, true);
+            this.drawLines(this.input1, true);
+            this.drawLines(this.input2, true);
         } 
         else 
         {
-            this.drawLines(this.input1.x, this.input1.y, true);
-            this.drawLines(this.input2.x, this.input2.y, true);
-            this.drawLines(this.output1.x, this.output1.y, false);
+            this.drawLines(this.input1, true);
+            this.drawLines(this.input2, true);
+            this.drawLines(this.output1, false);
         }
     }
 
-    drawLines(otherX, otherY, InOrOut) 
+    drawLines(other, InOrOut) 
     {
         push();
         strokeWeight(4);
@@ -143,12 +142,14 @@ class LogicGate
 
         // if InOrOut is true then draw lines pos if not draw negative
         drawingContext.lineDashOffset = InOrOut? this.dashOffset : -this.dashOffset;
-        line(this.x + this.width / 2 -25, this.y + this.height / 2, otherX + 7, otherY + 7);
+        line(this.x + this.width / 2 -25, this.y + this.height / 2, other.x + (other.height), other.y + (other.width/2));
+
         drawingContext.setLineDash([]); // Reset line dash to solid
         pop();
     }
     
-    setupInputs() {
+    setupInputs() 
+    {
         if (this.inputId1) {
             // Determine if inputId1 is a number or a letter
             if (!isNaN(parseInt(this.inputId1))) {
@@ -199,7 +200,8 @@ class LogicGate
     }
     
     // Method to check if the mouse is over the logic gate
-    over() {
+    over() 
+    {
         if (mouseX > this.x && mouseX < this.x + this.width && mouseY > this.y && mouseY < this.y + this.height) {
             this.rollover = true;
         } else {
@@ -208,7 +210,8 @@ class LogicGate
     }
 
     // Update the position of the logic gate if it's being dragged
-    update() {
+    update() 
+    {
         if (this.dragging) {
             this.x += mouseX - pmouseX; // Move the logic gate based on mouse movement
             this.y += mouseY - pmouseY;
@@ -216,12 +219,14 @@ class LogicGate
     }
 
     // Show the logic gate
-    show() {
+    show() 
+    {
         // Your existing show method...
     }
 
     // Handle mouse press event
-    pressed() {
+    pressed() 
+    {
         if (mouseX > this.x && mouseX < this.x + this.width && mouseY > this.y && mouseY < this.y + this.height) {
             this.dragging = true;
             this.offsetX = mouseX - this.x;
@@ -230,7 +235,8 @@ class LogicGate
     }
 
     // Handle mouse release event
-    released() {
+    released() 
+    {
         this.dragging = false;
     }
 
@@ -270,5 +276,12 @@ class LogicGate
             return false; 
         }
          
+    }
+
+    delete()
+    {
+        if (mouseX > this.x && mouseX < this.x + this.width && mouseY > this.y && mouseY < this.y + this.height) {
+            return true
+        }
     }
 }

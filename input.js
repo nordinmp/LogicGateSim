@@ -5,6 +5,9 @@ class Input
     this.x = x;
     this.y = y;
 
+    this.width = 14;
+    this.height = 14;
+
     this.num = inputNum;
     
     this.checkbox = createCheckbox();

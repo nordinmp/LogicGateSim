@@ -3,6 +3,14 @@ let outputs = [];
 let logicGates = [];
 let gateChoice;
 
+let sounds = [];
+function preload()
+{
+  soundFormats('mp3');
+
+  sounds[0] = loadSound('assets/sounds/pop.mp3')
+}
+
 function setup() 
 {
   createCanvas(windowWidth, windowHeight);
@@ -65,8 +73,9 @@ function draw()
   text('Inputs are required but outputs are optional.', width / 2, height / 3 + 90); // Adjusted position
   text('Normal inputs are from 1 - 6, but if you use other logic gates as inputs they are from A - Z', width / 2, height / 3 + 120); // Adjusted position
   text('Choose different kinds of logic gates from the dropdown in the left corner.', width / 2, height / 3 + 150); // Adjusted position
-  text('You can undo your logic gates in the right corner.', width / 2, height / 3 + 180); // Adjusted position
+  text('You can undo your logic gates in the right corner, or press on the logic gates to delete', width / 2, height / 3 + 180); // Adjusted position
   text('Most logic gates have 2 inputs, except for Buffer- and Not Gates they only have 1.', width / 2, height / 3 + 210); // Adjusted position
+  
   pop();
 
   line(150, 0, 150, height)
@@ -218,6 +227,8 @@ function doubleClicked()
 
     if (newGate) {
       logicGates.push(newGate);
+
+      sounds[0].play();
     }
   }
 }
@@ -230,14 +241,29 @@ function undoGate()
   }
 }
 
-function mousePressed() {
+function mouseClicked() 
+{
+  for (let i = 0; i < logicGates.length; i = i + 1)
+  { 
+    if (logicGates[i].delete())
+    {
+      logicGates.splice(i, 1);
+    }
+  }
+}
+
+
+
+function mousePressed() 
+{
   for (let i = 0; i < logicGates.length; i = i + 1)
   { 
     logicGates[i].pressed();
   }
 }
 
-function mouseReleased() {
+function mouseReleased()
+{
   // Quit dragging
 for (let i = 0; i < logicGates.length; i = i + 1)
   { 
